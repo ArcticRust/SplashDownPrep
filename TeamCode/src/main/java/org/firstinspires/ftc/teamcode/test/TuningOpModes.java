@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.drive.rr.tuning;
+package org.firstinspires.ftc.teamcode.test;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.reflection.ReflectionConfig;
@@ -26,6 +26,9 @@ import org.firstinspires.ftc.teamcode.drive.rr.MecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.rr.TankDrive;
 import org.firstinspires.ftc.teamcode.drive.rr.ThreeDeadWheelLocalizer;
 import org.firstinspires.ftc.teamcode.drive.rr.TwoDeadWheelLocalizer;
+import org.firstinspires.ftc.teamcode.drive.rr.tuning.ManualFeedbackTuner;
+import org.firstinspires.ftc.teamcode.drive.rr.tuning.SplineTest;
+import org.firstinspires.ftc.teamcode.test.LocalizationTest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
