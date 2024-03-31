@@ -1,9 +1,7 @@
 package org.firstinspires.ftc.teamcode.drive.localizer;
 
 import org.apache.commons.math4.legacy.linear.Array2DRowRealMatrix;
-import org.apache.commons.math4.legacy.linear.MatrixDimensionMismatchException;
 import org.apache.commons.math4.legacy.linear.RealMatrix;
-
 
 public class Matrix extends Array2DRowRealMatrix{
     public Matrix() {
@@ -16,7 +14,7 @@ public class Matrix extends Array2DRowRealMatrix{
         super(d);
     }
 
-    public Matrix rotate(double theta) throws MatrixDimensionMismatchException {
+    public Matrix rotate(double theta) {
         RealMatrix p = new Matrix(3, 3);
         p.setRow(0, new double[]{Math.cos(theta), -Math.sin(theta), 0});
         p.setRow(1, new double[]{Math.sin(theta), Math.cos(theta), 0});
