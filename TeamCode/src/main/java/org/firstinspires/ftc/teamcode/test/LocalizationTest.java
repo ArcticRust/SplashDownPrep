@@ -2,44 +2,61 @@ package org.firstinspires.ftc.teamcode.test;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.PoseVelocity2d;
-import com.acmerobotics.roadrunner.Vector2d;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-import org.firstinspires.ftc.teamcode.drive.rr.Drawing;
-import org.firstinspires.ftc.teamcode.drive.rr.MecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.localizer.Localizer;
+import org.firstinspires.ftc.teamcode.drive.localizer.Matrix;
 
-public class LocalizationTest extends LinearOpMode {
+@TeleOp(name="localization test")
+public class LocalizationTest extends OpMode {
+    private DcMotorEx leftFront, rightFront, leftRear, rightRear;
+    private Localizer localizer;
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void init() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
+        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
+        leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
+        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+        rightRear = hardwareMap.get(DcMotorEx.class, "rightRear");
 
-        waitForStart();
+        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftRear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightRear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        while (opModeIsActive()) {
-            drive.setDrivePowers(new PoseVelocity2d(
-                    new Vector2d(
-                            -gamepad1.left_stick_y,
-                            -gamepad1.left_stick_x
-                    ),
-                    -gamepad1.right_stick_x
-            ));
+        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-            drive.updatePoseEstimate();
+        //leftFront.setDirection(DcMotor.Direction.REVERSE);
+        //leftRear.setDirection(DcMotor.Direction.REVERSE);
 
-            telemetry.addData("x", drive.pose.position.x);
-            telemetry.addData("y", drive.pose.position.y);
-            telemetry.addData("heading (deg)", Math.toDegrees(drive.pose.heading.toDouble()));
-            telemetry.update();
+        localizer = new Localizer(hardwareMap, new Matrix());
 
-            TelemetryPacket packet = new TelemetryPacket();
-            packet.fieldOverlay().setStroke("#3F51B5");
-            Drawing.drawRobot(packet.fieldOverlay(), drive.pose);
-            FtcDashboard.getInstance().sendTelemetryPacket(packet);
-        }
+        telemetry.addLine("Initizalized!");
+        telemetry.update();
+    }
+    @Override
+    public void loop() {
+        double forward = gamepad1.right_stick_y;
+        double strafe = gamepad1.right_stick_x;
+        double turn = gamepad1.left_stick_x;
+
+        leftFront.setPower(forward + strafe + turn);
+        rightFront.setPower(forward - strafe - turn);
+        leftRear.setPower(forward - strafe + turn);
+        rightRear.setPower(forward + strafe - turn);
+
+        localizer.update();
+
+        telemetry.addData("x", localizer.getPose().getEntry(0,0));
+        telemetry.addData("y", localizer.getPose().getEntry(1,0));
+        telemetry.addData("heading (deg)", Math.toDegrees(localizer.getPose().getEntry(2,0)));
+        telemetry.update();
     }
 }

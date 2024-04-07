@@ -3,9 +3,9 @@ package org.firstinspires.ftc.teamcode.drive.localizer;
 import org.apache.commons.math4.legacy.linear.Array2DRowRealMatrix;
 import org.apache.commons.math4.legacy.linear.RealMatrix;
 
-public class Matrix extends Array2DRowRealMatrix{
+public class Matrix extends Array2DRowRealMatrix {
     public Matrix() {
-        super(3, 1);
+        super(new double[]{0, 0, 0});
     }
     public Matrix(int rows, int columns) {
         super(rows, columns);
