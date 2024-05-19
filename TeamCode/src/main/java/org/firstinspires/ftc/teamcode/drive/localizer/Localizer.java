@@ -3,9 +3,14 @@
  */
 package org.firstinspires.ftc.teamcode.drive.localizer;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 
 public class Localizer {
     private DcMotorEx leftEncoder, rightEncoder, perpEncoder;
@@ -38,6 +43,7 @@ public class Localizer {
         pr = rightEncoder.getCurrentPosition();
         pp = perpEncoder.getCurrentPosition();
     }
+
     public void update() {
         double l = leftEncoder.getCurrentPosition();
         double r = rightEncoder.getCurrentPosition();
