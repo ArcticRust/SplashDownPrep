@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 
+@TeleOp(name="ExtensionCurrent")
 public class ExtensionCurrent extends LinearOpMode {
     DcMotorEx extension;
     double x1, y1, x2;
