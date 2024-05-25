@@ -12,8 +12,8 @@ public class Encoder {
         if (encoder.getDirection().equals(DcMotor.Direction.REVERSE)) {
             offset = offset * -1;
         }
-        encoder.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         encoder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        encoder.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         ticks = encoder.getCurrentPosition();
     }
 

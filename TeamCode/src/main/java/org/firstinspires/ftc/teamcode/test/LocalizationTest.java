@@ -55,7 +55,6 @@ public class LocalizationTest extends OpMode {
         rightRear.setPower(forward + strafe - turn);
 
         localizer.update();
-
         telemetry.addData("x", localizer.getPose().getEntry(0,0));
         telemetry.addData("y", localizer.getPose().getEntry(1,0));
         telemetry.addData("heading (deg)", Math.toDegrees(localizer.getPose().getEntry(2,0)));
