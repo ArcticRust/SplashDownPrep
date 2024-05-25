@@ -13,12 +13,12 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 
 public class Localizer {
-    private DcMotorEx leftEncoder, rightEncoder, perpEncoder;
+    private Encoder leftEncoder, rightEncoder, perpEncoder;
     private final double sideDeviance = 6.4759; //how sideways the parallel encoders are from the center of rotation
     private final double backOffset = 6; //how far back the perp encoder is from the center of rotation
     private final double wheelRadius = 0.7644; //inches, like everything else
     private Matrix pose;
-    private double pl, pr, pp;
+    double c;
     /*
     tuning these should be done in this order (can be derived from formulas):
     wheelradius: move forwards 60 in and make sure it does that
@@ -27,41 +27,30 @@ public class Localizer {
      */
     public Localizer(HardwareMap hardwareMap, Matrix startPose) {
         //Init encoders and set standard settings
-        leftEncoder = hardwareMap.get(DcMotorEx.class, "liftOne");
-        rightEncoder = hardwareMap.get(DcMotorEx.class, "rightRear");
-        perpEncoder = hardwareMap.get(DcMotorEx.class, "rightFront");
+        leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "liftOne"));
+        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rightRear"));
+        perpEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rightFront"));
 
-        leftEncoder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightEncoder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        perpEncoder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        leftEncoder.setDirection(DcMotor.Direction.REVERSE);
+        leftEncoder.reverse();
 
         pose = startPose;
-
-        pl = leftEncoder.getCurrentPosition();
-        pr = rightEncoder.getCurrentPosition();
-        pp = perpEncoder.getCurrentPosition();
+        c = 2 * wheelRadius * Math.PI / 8192;
     }
 
     public void update() {
-        double l = leftEncoder.getCurrentPosition();
-        double r = rightEncoder.getCurrentPosition();
-        double p = perpEncoder.getCurrentPosition();
+        double l = leftEncoder.getChange();
+        double r = rightEncoder.getChange();
+        double p = perpEncoder.getChange();
 
         //basic kinematics formulas, remember x is forward/back
         //as it turns out how forwards the parallel wheels is inconsequential
-        double deltaX = wheelRadius * (l - pl + r - pr) / 2.0;
-        double deltaY = wheelRadius * (backOffset * (l - pl - r + pr) / (2 * sideDeviance) + p - pp);
-        double deltaA = wheelRadius / (2 * sideDeviance) * (r - pr - l + pl);
+        double deltaX = c * (l + r) / 2.0;
+        double deltaY = c * (backOffset * (l - r) / (2 * sideDeviance) + p);
+        double deltaA = c / (2 * sideDeviance) * (r - l);
 
         //odometry rotation shennanigans
         Matrix deltaPose = new Matrix(new double[]{deltaX, deltaY, deltaA});
         pose = Matrix.toMatrix(pose.add(deltaPose.poseExp(deltaA).rotate(pose.getEntry(2,0))));
-
-        pl = l;
-        pr = r;
-        pp = p;
     }
     public Matrix getPose() { return pose; }
     public void setPose(Matrix pose) { this.pose = pose; }

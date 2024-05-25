@@ -6,7 +6,9 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.drive.localizer.Localizer;
 import org.firstinspires.ftc.teamcode.drive.localizer.Matrix;
 
@@ -43,8 +45,8 @@ public class LocalizationTest extends OpMode {
     }
     @Override
     public void loop() {
-        double forward = gamepad1.right_stick_y;
-        double strafe = gamepad1.right_stick_x;
+        double forward = -gamepad1.right_stick_y;
+        double strafe = -gamepad1.right_stick_x;
         double turn = gamepad1.left_stick_x;
 
         leftFront.setPower(forward + strafe + turn);
@@ -57,6 +59,10 @@ public class LocalizationTest extends OpMode {
         telemetry.addData("x", localizer.getPose().getEntry(0,0));
         telemetry.addData("y", localizer.getPose().getEntry(1,0));
         telemetry.addData("heading (deg)", Math.toDegrees(localizer.getPose().getEntry(2,0)));
+        telemetry.addData("Left power", leftFront.getPower());
+        telemetry.addData("Left current", leftFront.getCurrent(CurrentUnit.AMPS));
+        telemetry.addData("Right power", rightFront.getPower());
+        telemetry.addData("Right current", rightFront.getCurrent(CurrentUnit.AMPS));
         telemetry.update();
     }
 }
