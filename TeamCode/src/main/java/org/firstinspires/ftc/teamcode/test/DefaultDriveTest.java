@@ -7,13 +7,13 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.drive.localizer.Localizer;
 import org.firstinspires.ftc.teamcode.drive.localizer.Matrix;
 
-@TeleOp(name="localization test")
-public class LocalizationTest extends OpMode {
+@TeleOp(name="default drive")
+public class DefaultDriveTest extends OpMode {
     private DcMotorEx leftFront, rightFront, leftRear, rightRear;
-    private Localizer localizer;
     @Override
     public void init() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -36,8 +36,6 @@ public class LocalizationTest extends OpMode {
         leftFront.setDirection(DcMotor.Direction.REVERSE);
         leftRear.setDirection(DcMotor.Direction.REVERSE);
 
-        localizer = new Localizer(hardwareMap, new Matrix());
-
         telemetry.addLine("Initizalized!");
         telemetry.update();
     }
@@ -52,11 +50,12 @@ public class LocalizationTest extends OpMode {
         leftRear.setPower(forward - strafe + turn);
         rightRear.setPower(forward + strafe - turn);
 
-        localizer.update();
+        telemetry.addData("Left Front Power", leftFront.getCurrent(CurrentUnit.AMPS));
+        telemetry.addData("Right Front Power", rightFront.getCurrent(CurrentUnit.AMPS));
+        telemetry.addData("Left Rear Power", leftRear.getCurrent(CurrentUnit.AMPS));
+        telemetry.addData("Right Rear Power", rightRear.getCurrent(CurrentUnit.AMPS));
+        telemetry.addData("Sum", leftFront.getCurrent(CurrentUnit.AMPS) + leftRear.getCurrent(CurrentUnit.AMPS) + rightFront.getCurrent(CurrentUnit.AMPS) + rightRear.getCurrent(CurrentUnit.AMPS));
 
-        telemetry.addData("x", localizer.getPose().getEntry(0,0));
-        telemetry.addData("y", localizer.getPose().getEntry(1,0));
-        telemetry.addData("heading (deg)", Math.toDegrees(localizer.getPose().getEntry(2,0)));
         telemetry.update();
     }
 }
