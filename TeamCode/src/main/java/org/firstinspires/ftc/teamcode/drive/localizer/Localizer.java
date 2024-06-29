@@ -14,9 +14,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 
 public class Localizer {
     private Encoder leftEncoder, rightEncoder, perpEncoder;
-    private final double sideDeviance = 6.4759; //how sideways the parallel encoders are from the center of rotation
-    private final double backOffset = 6; //how far back the perp encoder is from the center of rotation
-    private final double wheelRadius = 0.7644; //inches, like everything else
+    private final double sideDeviance = 6.4759 / 1.03123063222; //how sideways the parallel encoders are from the center of rotation
+    private final double backOffset = 6 * 1.01174159766; //how far back the perp encoder is from the center of rotation
+    private final double wheelRadius = 0.7644 * 0.9038301095; //inches, like everything else
     private Matrix pose;
     double c;
     /*
@@ -51,6 +51,11 @@ public class Localizer {
         //odometry rotation shennanigans
         Matrix deltaPose = new Matrix(new double[]{deltaX, deltaY, deltaA});
         pose = Matrix.toMatrix(pose.add(deltaPose.poseExp(deltaA).rotate(pose.getEntry(2,0))));
+        if (pose.getEntry(2, 0) <= -2 * Math.PI) {
+            pose.setEntry(2, 0, pose.getEntry(2,0) + 2 * Math.PI);
+        } else if (pose.getEntry(2, 0) >= 2 * Math.PI) {
+            pose.setEntry(2, 0, pose.getEntry(2,0) - 2 * Math.PI);
+        }
     }
     public Matrix getPose() { return pose; }
     public void setPose(Matrix pose) { this.pose = pose; }
