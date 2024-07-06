@@ -10,13 +10,18 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.drive.localizer.Localizer;
 import org.firstinspires.ftc.teamcode.drive.localizer.Matrix;
+import org.firstinspires.ftc.teamcode.headers.sparkfun.SparkFunOTOS;
 
 @TeleOp(name="default drive")
 public class DefaultDriveTest extends OpMode {
     private DcMotorEx leftFront, rightFront, leftRear, rightRear;
+    SparkFunOTOS odo;
     @Override
     public void init() {
-        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+        //telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+        odo = hardwareMap.get(SparkFunOTOS.class, "sensor_otos");
+        SparkFunOTOS.Pose2D offset = new SparkFunOTOS.Pose2D(0, -6, 0);
+        odo.setOffset(offset);
 
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
         leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
@@ -55,6 +60,9 @@ public class DefaultDriveTest extends OpMode {
         telemetry.addData("Left Rear Power", leftRear.getCurrent(CurrentUnit.AMPS));
         telemetry.addData("Right Rear Power", rightRear.getCurrent(CurrentUnit.AMPS));
         telemetry.addData("Sum", leftFront.getCurrent(CurrentUnit.AMPS) + leftRear.getCurrent(CurrentUnit.AMPS) + rightFront.getCurrent(CurrentUnit.AMPS) + rightRear.getCurrent(CurrentUnit.AMPS));
+        telemetry.addData("X Position", odo.getPosition().x);
+        telemetry.addData("Y Position", odo.getPosition().y);
+        telemetry.addData("Heading", odo.getPosition().h);
 
         telemetry.update();
     }
