@@ -5,7 +5,7 @@ import org.apache.commons.math4.legacy.linear.RealMatrix;
 
 public class Matrix extends Array2DRowRealMatrix {
     public Matrix() {
-        super(new double[]{0, 0, 0});
+        super();
     }
     public Matrix(int rows, int columns) {
         super(rows, columns);
