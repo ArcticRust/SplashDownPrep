@@ -39,7 +39,7 @@ public class Util {
             double xRoot2 = (-B - Math.sqrt(Math.pow(B, 2) - (4 * A * C))) / (2 * A) + circleCenter.x;
             double yRoot2 = m1 * (xRoot1 - x1) + y1 + circleCenter.y;
 
-            if (xRoot1 > minX && xRoot1 < maxX) {
+            if (xRoot2 > minX && xRoot2 < maxX) {
                 allPoints.add(new Point(xRoot2, yRoot2));
             }
         } catch (Exception e) {
