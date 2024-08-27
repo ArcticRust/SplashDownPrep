@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.drive.traj;
 
-import org.opencv.core.Point;
+import org.firstinspires.ftc.teamcode.why.src.org.opencv.core.Point;
 import java.util.ArrayList;
 
 public class Util {

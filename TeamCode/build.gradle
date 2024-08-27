@@ -44,5 +44,11 @@ dependencies {
     implementation files('..\\libs\\jar_files\\commons-rng-sampling-1.5.jar')
     implementation files('..\\libs\\jar_files\\commons-rng-simple-1.5.jar')
     implementation files('..\\libs\\jar_files\\commons-statistics-distribution-1.0.jar')
+    implementation fileTree(dir: 'C:\\Users\\clark\\openjfx-22.0.2_windows-x64_bin-sdk\\javafx-sdk-22.0.2', include: ['*.aar', '*.jar'], exclude: [])
+    implementation files('C:\\Users\\clark\\openjfx-22.0.2_windows-x64_bin-sdk\\javafx-sdk-22.0.2\\lib\\javafx.base.jar')
+    implementation files('C:\\Users\\clark\\openjfx-22.0.2_windows-x64_bin-sdk\\javafx-sdk-22.0.2\\lib\\javafx.base.jar')
+    implementation files('C:\\Users\\clark\\openjfx-22.0.2_windows-x64_bin-sdk\\javafx-sdk-22.0.2\\lib\\javafx.controls.jar')
+    implementation files('C:\\Users\\clark\\openjfx-22.0.2_windows-x64_bin-sdk\\javafx-sdk-22.0.2\\lib\\javafx.fxml.jar')
+    implementation files('C:\\Users\\clark\\openjfx-22.0.2_windows-x64_bin-sdk\\javafx-sdk-22.0.2\\lib\\javafx.graphics.jar')
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
 }
